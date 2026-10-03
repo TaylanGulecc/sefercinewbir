@@ -1,0 +1,12 @@
+node_modules/
+.idea/
+.env
+
+# Playwright / playwright-bdd çıktıları
+.features-gen/
+playwright-report/
+test-results/
+
+# Test edilen uygulama dosyaları (ortak alandan indirilir, git'e eklenmez)
+apps/*.apk
+apps/*.aab

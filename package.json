@@ -1,0 +1,24 @@
+{
+  "name": "sefercinewbir",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Seferci mobil test otomasyonu — Appium + WebdriverIO + Playwright Test (playwright-bdd)",
+  "scripts": {
+    "bddgen": "bddgen",
+    "test": "bddgen && playwright test",
+    "test:bs": "bddgen && cross-env RUN_ENV=bs playwright test",
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit",
+    "upload:bs": "node scripts/upload-browserstack.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.57.0",
+    "cross-env": "^7.0.3",
+    "playwright-bdd": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "webdriverio": "^9.23.2"
+  }
+}

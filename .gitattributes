@@ -1,0 +1,10 @@
+# Satır sonlarını makine ayarından (core.autocrlf) bağımsız sabitle
+* text=auto eol=lf
+
+# Windows PowerShell script'i CRLF kalsın (dosya UTF-8 BOM + CRLF ile kayıtlı)
+*.ps1 text eol=crlf
+
+# İkili dosyalar
+*.png binary
+*.apk binary
+*.aab binary

@@ -1,0 +1,8 @@
+node_modules
+.env
+.git
+.idea
+.features-gen
+playwright-report
+test-results
+apps/*.apk

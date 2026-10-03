@@ -1,0 +1,48 @@
+trigger:
+  - main
+
+pool:
+  name: Miks-Docker
+
+# BS_USERNAME ve BS_ACCESS_KEY'i buraya yazmayın; Azure DevOps'ta pipeline'ın
+# "Variables" bölümüne gizli (secret) değişken olarak ekleyin.
+variables:
+  imageName: 'sefercinewbir-mobile-automation'
+  RUN_ENV: 'bs'
+  # 'Seferci' = BrowserStack'e custom_id ile en son yüklenen APK (npm run upload:bs).
+  # Belirli bir sürümü test etmek için bs://... adresini yazın.
+  BS_APP_URL: 'Seferci'
+
+steps:
+
+- task: Docker@2
+  displayName: 'Build Docker Image'
+  inputs:
+    command: build
+    repository: $(imageName)
+    dockerfile: 'Dockerfile'
+    tags: |
+      latest
+    buildContext: .
+
+# Gizli değişkenler script'lere otomatik aktarılmaz; env ile açıkça verilir.
+- script: |
+    docker run --rm \
+      -e CI=true \
+      -e RUN_ENV=$(RUN_ENV) \
+      -e BS_USERNAME="$BS_USERNAME" \
+      -e BS_ACCESS_KEY="$BS_ACCESS_KEY" \
+      -e BS_APP_URL=$(BS_APP_URL) \
+      -v $(System.DefaultWorkingDirectory)/playwright-report:/app/playwright-report \
+      $(imageName):latest
+  displayName: 'Run Tests inside Docker'
+  env:
+    BS_USERNAME: $(BS_USERNAME)
+    BS_ACCESS_KEY: $(BS_ACCESS_KEY)
+
+- task: PublishBuildArtifacts@1
+  condition: always()
+  inputs:
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/playwright-report'
+    ArtifactName: 'PlaywrightReport'
+    publishLocation: 'Container'
